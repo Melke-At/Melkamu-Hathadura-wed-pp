@@ -48,7 +48,7 @@ const EditJobPage = () => {
   };
 
   const cancelEdit = () => {
-    console.log("cancelEdit");
+    navigate(`/jobs/${id}`);
   };
 
   return (
