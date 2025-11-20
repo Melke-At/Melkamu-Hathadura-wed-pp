@@ -19,6 +19,7 @@ const JobPage = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching job:", error);
+      }finally{
         setLoading(false);
       }
     };
@@ -26,9 +27,34 @@ const JobPage = () => {
     fetchJob();
   }, [id]);
 
-  const deleteJob = async () => {
-    console.log(JobPage);
+   const deleteJob = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this job?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`http://localhost:4000/api/jobs/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete job");
+      }
+
+      alert("Job successfully deleted");
+
+      // Remove job visually by navigating away
+      navigate("/");
+    } catch (error) {
+      console.error("Error deleting job:", error);
+      alert("Error deleting job. Check console for details.");
+    }
   };
+
+
+
 
   if (!job) {
     return <div>Loading...</div>;
