@@ -5,6 +5,26 @@ const JobPage = () => {
   const { id } = useParams();
   const [job, setJob] = useState(null);
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const res = await fetch(`http://localhost:4000/api/jobs/${id}`);
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch job");
+        }
+
+        const data = await res.json();
+        setJob(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching job:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchJob();
+  }, [id]);
 
   const deleteJob = async () => {
     console.log(JobPage);
